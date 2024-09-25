@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/pages/home/dimension.dart';
 
 class PopularFoodDetail extends StatelessWidget {
   const PopularFoodDetail({super.key});
@@ -14,10 +15,11 @@ class PopularFoodDetail extends StatelessWidget {
             right: 0,
               child: Container(
                 width: double.maxFinite,
-                height: 350,
+                height: Dimension.popularViewImage,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(""))
+                    fit: BoxFit.cover,
+                      image: AssetImage("assets/image/food0.png"))
                 ),
 
           ))
