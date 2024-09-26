@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/pages/home/dimension.dart';
 import 'package:food_app/widgets/column_detail.dart';
+import 'package:food_app/widgets/extend_text.dart';
 
 import '../../utils/colors.dart';
 import '../../widgets/app_icon.dart';
@@ -46,6 +47,7 @@ class PopularFoodDetail extends StatelessWidget {
             ),
 
           ),
+          // thông tin
           Positioned(
               left: 0,
               right: 0,
@@ -67,7 +69,11 @@ class PopularFoodDetail extends StatelessWidget {
 
                     ColumnDetail(textName: "Nhái nhon nhặc",),
                      SizedBox(height: Dimension.height20,),
-                     BigText(text: "Introduce")
+                     BigText(text: "Introduce"),
+                    SizedBox(height: Dimension.height20,),
+                    Expanded(child: SingleChildScrollView(
+                      child: ExtendText(text: "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
+                    ))
                   ],
                 ),
           ))
