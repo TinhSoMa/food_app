@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/utils/colors.dart';
 import 'package:food_app/widgets/big_text.dart';
+import 'package:food_app/widgets/column_detail.dart';
 import 'package:food_app/widgets/icon_and_text.dart';
 import 'package:food_app/widgets/small_text.dart';
 
@@ -225,36 +226,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
               ),
               child: Container(
                 padding: EdgeInsets.only(top: Dimension.height15, left: Dimension.width15, right: Dimension.width15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BigText(text: "Con cat"),
-                    SizedBox(height: Dimension.height10,),
-                    Row(
-                      children: [
-                        Wrap(
-                          children: List.generate(5, (index) {return Icon(Icons.star, color:AppColors.mainColor,size: Dimension.icon15,);}),
-                        ),
-                        SizedBox(width: Dimension.height10,),
-                        SmallText(text: "4.5"),
-                        SizedBox(width: Dimension.height10,),
-                        SmallText(text: "1000"),
-                        SizedBox(width: Dimension.height10,),
-                        SmallText(text: "Comments"),
-                      ],
-                    ),
-                    SizedBox(height: Dimension.height20,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconAndText(iconData: Icons.circle_sharp, text: "Nomarl", iconColor: AppColors.iconColor1),
-                        IconAndText(iconData: Icons.location_on, text: "1.5km", iconColor: AppColors.mainColor),
-                        IconAndText(iconData: Icons.access_time, text: "32min", iconColor: AppColors.iconColor1)
-
-                      ],
-                    )
-                  ],
-                ),
+                child: ColumnDetail(textName: "Cái nhon nhặc",),
               ),
             ),
           )

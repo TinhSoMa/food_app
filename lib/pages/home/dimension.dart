@@ -33,6 +33,8 @@ class Dimension {
 
   // font size
   static double font_size20 = screenHeight/41.92;
+  static double font_size26 = screenHeight/32.61;
+
 
   static double radius15 = screenHeight/56.56;
   static double radius20 = screenHeight/42.42;
@@ -41,6 +43,8 @@ class Dimension {
 
   // icon size
   static double icon15 = screenHeight/56.55;
+  static double icon16 = screenHeight/53;
+  static double icon20 = screenHeight/42.4;
   static double icon24 = screenHeight/35.34;
 
   // list view food
