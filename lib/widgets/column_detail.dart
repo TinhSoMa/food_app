@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/widgets/small_text.dart';
 
-import '../pages/home/dimension.dart';
+import '../utils/dimension.dart';
 import '../utils/colors.dart';
 import 'big_text.dart';
 import 'icon_and_text.dart';
-
+// AppColumn
 class ColumnDetail extends StatelessWidget {
   final String textName;
   const ColumnDetail({super.key, required this.textName});

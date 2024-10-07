@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../pages/home/dimension.dart';
+import '../utils/dimension.dart';
 
 class BigText extends StatelessWidget {
   final Color color;

@@ -4,7 +4,7 @@ import 'package:food_app/utils/colors.dart';
 import 'package:food_app/widgets/big_text.dart';
 import 'package:food_app/widgets/small_text.dart';
 
-import 'dimension.dart';
+import '../../utils/dimension.dart';
 import 'food_page_body.dart';
 
 class MainFoodPage extends StatefulWidget {
