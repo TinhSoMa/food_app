@@ -27,8 +27,22 @@ class CartModel {
     price = json['price'];
     img = json['img'];
     quantity = json['quantity'];
-    isExit = json['img'];
+    isExit = json['isExit'];
     time = json['time'];
     productsModel = ProductsModel.fromJson(json['product']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "name": name,
+      "price": price,
+      "img": img,
+      "quantity": quantity,
+      "isExit": isExit,
+      "time": time,
+      "product": productsModel!.toJson(),
+    };
+
   }
 }

@@ -12,7 +12,8 @@ import 'package:food_app/widgets/big_text.dart';
 import 'package:food_app/widgets/small_text.dart';
 import 'package:get/get.dart';
 
-import '../routes/route_helper.dart';
+import '../../routes/route_helper.dart';
+
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});

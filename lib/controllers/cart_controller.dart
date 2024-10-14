@@ -12,6 +12,8 @@ class CartController extends GetxController {
 
   Map<int, CartModel> _items = {};
   Map<int, CartModel> get items => _items;
+  // để lưu trữ là share
+  List<CartModel> storageItems = [];
 
   void addItem(ProductsModel product, int quantity) {
     var totalQuantity = 0;
@@ -58,6 +60,7 @@ class CartController extends GetxController {
             colorText: Colors.white);
       }
     }
+    cartRepo.addToCartList(getItems);
     update();
   }
 
@@ -102,5 +105,14 @@ class CartController extends GetxController {
       total += value.quantity!*value.price!;
     });
     return total;
+  }
+
+  List <CartModel> getCartData() {
+
+    return storageItems;
+  }
+
+  set setCart(List<CartModel> items) {
+
   }
 }

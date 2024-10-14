@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_app/cart/cart_page.dart';
+// import 'package:food_app/cart/cart_page.dart';
 import 'package:food_app/controllers/popular_product_coontroller.dart';
 import 'package:get/get.dart';
 
