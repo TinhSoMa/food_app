@@ -18,8 +18,8 @@ class _MainState extends State<MainFoodPage> {
   @override
   Widget build(BuildContext context) {
     // kiem tra ty le man hinh
-    // print("chieu dai man hinh: "+ MediaQuery.of(context).size.height.toString());
-    print("chieu dai man hinh: "+ MediaQuery.of(context).size.width.toString());
+    print("height: "+ MediaQuery.of(context).size.height.toString());
+    print("width: "+ MediaQuery.of(context).size.width.toString());
     return Scaffold(
       body: Column(
         children: [
