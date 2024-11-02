@@ -29,11 +29,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     _loadResource();
     super.initState();
     controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 2))..forward();
+        AnimationController(vsync: this, duration: Duration(seconds: 3))..forward();
     animation = CurvedAnimation(parent: controller, curve: Curves.linear);
 
     Timer(
-        Duration(seconds: 2), // Dấu ngoặc cho Duration phải được đóng
+        Duration(seconds: 3), // Dấu ngoặc cho Duration phải được đóng
             () =>
             Get.offNamed(
                 RouteHelper.getInitial()) // Hàm callback phải đúng cú pháp
@@ -53,5 +53,12 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // Dừng và huỷ AnimationController
+    controller.dispose();
+    super.dispose();
   }
 }

@@ -106,13 +106,47 @@ class CartController extends GetxController {
     });
     return total;
   }
-
+  // lấy dữ liệu từ cart (sharedPreferences) đã được lưu
   List <CartModel> getCartData() {
-
+    setCart  = cartRepo.getCartList();
     return storageItems;
   }
 
   set setCart(List<CartModel> items) {
-
+    storageItems=items;
+    print("Length cart items " + storageItems.length.toString());
+    for (int i = 0; i<storageItems.length; i++) {
+      _items.putIfAbsent(storageItems[i].productsModel!.id!, () => storageItems[i]);
+    }
   }
+
+//   lấy dữ liệu từ cart (sharedPreferences) vào cart histpry
+  void getCartHistory() {
+    cartRepo.addToCartHistoryList();
+    clear();
+  }
+  void clear() {
+    _items={};
+    update();
+  }
+
+  List<CartModel> getCartHistoryList() {
+    return cartRepo.getCartHistoryList();
+  }
+
+  set setCartHistory(Map<int, CartModel> items) {
+    _items= {};
+    _items=items;
+  }
+
+  void addToCartHistoryList() {
+    cartRepo.addToCartList(getItems);
+    update();
+  }
+
+  void clearCartHistory() {
+    cartRepo.clearCartHistory();
+    update();
+  }
+
 }

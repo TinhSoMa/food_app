@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/pages/account/account_page.dart';
+import 'package:food_app/pages/auth/sign_up_page.dart';
+import 'package:food_app/pages/cart/cart_history_page.dart';
+import 'package:food_app/pages/cart/cart_page.dart';
 import 'package:food_app/pages/home/main_food_page.dart';
 import 'package:food_app/utils/colors.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../../routes/route_helper.dart';
+import '../auth/sign_in_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,9 +22,13 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   List pages = [
     MainFoodPage(),
-    Container(child: Center(child: Text("1"),),),
-    Container(child: Center(child: Text("2"),),),
-    Container(child: Center(child: Text("3"),),)
+    // SignInPage(),
+    Container(
+    ),
+    CartHistoryPage(),
+    // Get.toNamed(RouteHelper.getCartPage()),
+    // CartPage(),
+    AccountPage(),
 
   ];
 
@@ -28,18 +41,21 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: AppColors.mainColor,
+        backgroundColor: Colors.white,
+          selectedItemColor: AppColors.mainColor,
           unselectedItemColor: Colors.amberAccent,
           showSelectedLabels: false,
-          showUnselectedLabels: false,
+          showUnselectedLabels: true,
           onTap: onTapNav,
           currentIndex: _selectedIndex,
           selectedFontSize: 0.0,
           unselectedFontSize: 0.0,
           items: const [
             BottomNavigationBarItem(
+                backgroundColor: Colors.white,
                 icon: Icon(Icons.home_outlined),
                 label: "home"
             ),
