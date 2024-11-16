@@ -5,14 +5,14 @@ import 'package:food_app/utils/dimension.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import '../pages/auth/auth_controller.dart';
+import '../controllers/auth_controller.dart';
 
 class CustomLoader extends StatelessWidget {
   const CustomLoader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    print("CustomLoader" + Get.find<AuthController>().isLoading.toString());
+    print("CustomLoader " + Get.find<AuthController>().isLoading.toString());
     return Center(
       child: Container(
         height: Dimension.height100,

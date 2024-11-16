@@ -13,11 +13,11 @@ class CartRepo {
   var time = DateTime.now().toString();
 
   void addToCartList(List<CartModel> cartList) {
-    sharedPreferences.remove(AppConstants.CART_LIST);
-    sharedPreferences.remove(AppConstants.CART_HISTORY_LIST);
-    sharedPreferences.remove(AppConstants.TOKEN);
-    sharedPreferences.remove(AppConstants.PHONE);
-    sharedPreferences.remove(AppConstants.PASSWORD);
+    // sharedPreferences.remove(AppConstants.CART_LIST);
+    // sharedPreferences.remove(AppConstants.CART_HISTORY_LIST);
+    // sharedPreferences.remove(AppConstants.TOKEN);
+    // sharedPreferences.remove(AppConstants.PHONE);
+    // sharedPreferences.remove(AppConstants.PASSWORD);
     cart = [];
     cartList.forEach((action) {
       action.time = time;
