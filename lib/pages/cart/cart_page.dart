@@ -2,9 +2,10 @@
 import 'package:flutter/services.dart';
 import 'package:food_app/base/no_data_page.dart';
 import 'package:food_app/controllers/cart_controller.dart';
+import 'package:food_app/controllers/location_controller.dart';
 import 'package:food_app/controllers/popular_product_coontroller.dart';
+import 'package:food_app/controllers/auth_controller.dart';
 import 'package:food_app/controllers/recommended_product_controller.dart';
-import 'package:food_app/pages/auth/auth_controller.dart';
 import 'package:food_app/pages/home/main_food_page.dart';
 import 'package:food_app/utils/app_constants.dart';
 import 'package:food_app/utils/colors.dart';
@@ -211,7 +212,14 @@ class CartPage extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   if(Get.find<AuthController>().userIsLoggedIn()) {
-                    cartController.getCartHistory();
+                    print("Login ???");
+                    if (Get.find<LocationController>().addressList.isEmpty) {
+                      Get.toNamed(RouteHelper.getAddressPage());
+                    }
+                    // } else {
+                    //   Get.offNamed(RouteHelper.getInitial());
+                    // }
+                    // cartController.getCartHistory();
                   } else {
                     Get.toNamed(RouteHelper.getSignInPage());
                   }

@@ -60,12 +60,15 @@ class _HomePageState extends State<HomePage> {
                 label: "home"
             ),
             BottomNavigationBarItem(
+                backgroundColor: Colors.white,
                 icon: Icon(Icons.archive_outlined),
                 label: "history"
             ),BottomNavigationBarItem(
+                backgroundColor: Colors.white,
                 icon: Icon(Icons.shopping_cart_outlined),
                 label: "cart"
             ),BottomNavigationBarItem(
+                backgroundColor: Colors.white,
                 icon: Icon(Icons.person_2_outlined),
                 label: "me"
             ),

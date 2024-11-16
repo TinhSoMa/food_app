@@ -61,6 +61,13 @@ class _MainState extends State<MainFoodPage> {
                         borderRadius: BorderRadius.circular(Dimension.radius15),
                         color: AppColors.mainColor,
                       ),
+                      child: Center(
+                        child: Icon(
+                          Icons.shopping_cart_outlined,
+                          color: Colors.white,
+                          size: Dimension.icon24,
+                        ),
+                      ),
                       // child: Stack(
                       //   children: [
                       //     Center(

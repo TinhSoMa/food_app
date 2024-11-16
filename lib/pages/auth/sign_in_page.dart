@@ -11,7 +11,7 @@ import 'package:get/get_core/src/get_main.dart';
 import '../../base/show_customer_snack_bar.dart';
 import '../../routes/route_helper.dart';
 import '../../widgets/big_text.dart';
-import 'auth_controller.dart';
+import '../../controllers/auth_controller.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});

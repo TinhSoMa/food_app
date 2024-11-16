@@ -10,10 +10,16 @@ class AppConstants {
 
   static const String REGISTRATION_URI = "/api/auth/register";
   static const String LOGIN_URI = "/api/auth/login";
+  static const String USER_INFO_URI = "/api/customer/info";
+  static const String GEOCODE_URI = "/api/config/geocode-api";
+  static const String API_KEY = "AIzaSyCgSkUqL1ZHlrlEYYFglBDL7TGzG-DzE2Q";
 
+  static const String USER_ADDRESS = "user-address";
+  static const String ADD_USER_ADDRESS = "/api/customer/address/add";
+  static const String ADDRESS_LIST_URI = "/api/customer/address/list";
   static const String UPLOAD = "/uploads/";
 
-  static const String TOKEN = "";
+  static const String TOKEN = "token";
   static const String PHONE = "";
   static const String PASSWORD = "";
 

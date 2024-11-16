@@ -2,7 +2,7 @@ import 'package:food_app/models/response_model.dart';
 import 'package:food_app/models/signup_body_model.dart';
 import 'package:get/get.dart';
 
-import '../../data/repository/auth_repo.dart';
+import '../data/repository/auth_repo.dart';
 
 class AuthController extends GetxController implements GetxService {
   final AuthRepo authRepo;
@@ -29,7 +29,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   Future<ResponseModel> login(String phone, String password) async {
-    print("Sign in Token "+ authRepo.getUserToken().toString());
+    // print("Sign in Token "+ authRepo.getUserToken().toString());
     _isLoading = true;
     update();
     Response response = await authRepo.login(phone, password);

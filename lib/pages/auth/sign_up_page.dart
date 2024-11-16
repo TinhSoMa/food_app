@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/base/show_customer_snack_bar.dart';
 import 'package:food_app/models/signup_body_model.dart';
+import 'package:food_app/routes/route_helper.dart';
 import 'package:food_app/utils/colors.dart';
 import 'package:food_app/utils/dimension.dart';
 import 'package:food_app/widgets/app_text_field.dart';
@@ -10,7 +11,7 @@ import 'package:get/get_core/src/get_main.dart';
 
 import '../../base/custom_loader.dart';
 import '../../widgets/big_text.dart';
-import 'auth_controller.dart';
+import '../../controllers/auth_controller.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -61,6 +62,8 @@ class SignUpPage extends StatelessWidget {
             // Get.back();
             showCustomerSnackBar("Sign up successfully", isError: false,
                 title: "Success");
+            Get.offNamed(RouteHelper.getInitial());
+
           } else {
             showCustomerSnackBar(status.message, title: "Error");
           }
@@ -72,7 +75,7 @@ class SignUpPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: GetBuilder<AuthController>(builder: (_authControllerBuilder){
-        return SingleChildScrollView(
+        return _authControllerBuilder.isLoading?SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
@@ -152,7 +155,7 @@ class SignUpPage extends StatelessWidget {
 
             ],
           ),
-        );
+        ):CustomLoader();
       }),
     );
   }
