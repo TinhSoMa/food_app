@@ -8,7 +8,6 @@ import 'package:food_app/widgets/account_widget.dart';
 import 'package:food_app/widgets/app_icon.dart';
 import 'package:food_app/widgets/big_text.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../routes/route_helper.dart';
@@ -17,6 +16,7 @@ import '../../controllers/auth_controller.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
+
   Future<void> _showSharedData(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -37,7 +37,8 @@ class AccountPage extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Shared Data"),
-          content: Text(dataBuffer.isNotEmpty ? dataBuffer.toString() : "No data found"),
+          content: Text(
+              dataBuffer.isNotEmpty ? dataBuffer.toString() : "No data found"),
           actions: [
             TextButton(
               child: Text("OK"),
@@ -51,177 +52,210 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     bool userIsLoggedIn = Get.find<AuthController>().userIsLoggedIn();
     if (userIsLoggedIn) {
       Get.find<UserController>().getUserData();
       print("User is logged in");
-      // _showSharedData(context);
     }
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.mainColor,
-        title: BigText(text: "Profile", size: 24, color: Colors.white,),
+        title: BigText(
+          text: "Profile",
+          size: 24,
+          color: Colors.white,
+        ),
       ),
       body: GetBuilder<UserController>(builder: (userController) {
-        return userIsLoggedIn ? (!userController.isLoading ? Container(
-          width: double.maxFinite,
-          margin: EdgeInsets.only(top: Dimension.height20),
-          child: Column(
-            children: [
-              //profile
-              AppIcon(iconData: Icons.person, size: Dimension.height50 * 3, color: Colors.white, iconSize: Dimension.height80, colorBackGroundColor: AppColors.mainColor,),
-              SizedBox(height: Dimension.height20,),
-              //Name
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      //name
-                      AccountWidget(
-                          appIcon: AppIcon(iconData: Icons.person, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: AppColors.mainColor,),
-                          bigText: BigText(text: userController.userModel.name)),
-                      SizedBox(height: Dimension.height20,),
-                      //phone
-                      AccountWidget(
-                          appIcon: AppIcon(iconData: Icons.phone, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: AppColors.yellowColor,),
-                          bigText: BigText(text: userController.userModel.phone)),
-                      SizedBox(height: Dimension.height20,),
-                      //email
-                      AccountWidget(
-                          appIcon: AppIcon(iconData: Icons.email, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: AppColors.yellowColor,),
-                          bigText: BigText(text: userController.userModel.email)),
-                      SizedBox(height: Dimension.height20,),
-                      //address
-                      GetBuilder<LocationController>(builder: (locationController) {
-                        if (locationController.addressList.isNotEmpty) {
-                          return GestureDetector(
+        return userIsLoggedIn
+            ? (!userController.isLoading
+                ? Container(
+                    width: double.maxFinite,
+                    margin: EdgeInsets.only(top: Dimension.height20),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          // Profile Icon có thể cuộn
+                          SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: AppIcon(
+                              iconData: Icons.person,
+                              size: Dimension.height50 * 3,
+                              color: Colors.white,
+                              iconSize: Dimension.height80,
+                              colorBackGroundColor: AppColors.mainColor,
+                            ),
+                          ),
+                          SizedBox(height: Dimension.height20),
+                          // Nút Update Info
+                          GestureDetector(
                             onTap: () {
-                              Get.toNamed(RouteHelper.getAddressPage());
+                              Get.toNamed(RouteHelper.getUpdateInfo());
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  top: Dimension
+                                      .height10), // Khoảng cách với icon trên
+                              padding: EdgeInsets.symmetric(
+                                vertical: Dimension.height5,
+                                horizontal: Dimension.width15,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.mainColor,
+                                borderRadius:
+                                    BorderRadius.circular(Dimension.radius15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 4,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                    size: Dimension.height15,
+                                  ),
+                                  SizedBox(width: Dimension.width10),
+                                  Text(
+                                    "Update Info",
+                                    style: TextStyle(
+                                      fontSize: Dimension.font_size16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: Dimension.height20),
+                          // Các thông tin khác
+                          AccountWidget(
+                            appIcon: AppIcon(
+                              iconData: Icons.person,
+                              size: Dimension.height50,
+                              color: Colors.white,
+                              iconSize: Dimension.height20,
+                              colorBackGroundColor: AppColors.mainColor,
+                            ),
+                            bigText:
+                                BigText(text: userController.userModel.name),
+                          ),
+                          SizedBox(height: Dimension.height20),
+                          AccountWidget(
+                            appIcon: AppIcon(
+                              iconData: Icons.phone,
+                              size: Dimension.height50,
+                              color: Colors.white,
+                              iconSize: Dimension.height20,
+                              colorBackGroundColor: AppColors.yellowColor,
+                            ),
+                            bigText:
+                                BigText(text: userController.userModel.phone),
+                          ),
+                          SizedBox(height: Dimension.height20),
+                          AccountWidget(
+                            appIcon: AppIcon(
+                              iconData: Icons.email,
+                              size: Dimension.height50,
+                              color: Colors.white,
+                              iconSize: Dimension.height20,
+                              colorBackGroundColor: AppColors.yellowColor,
+                            ),
+                            bigText:
+                                BigText(text: userController.userModel.email),
+                          ),
+                          SizedBox(height: Dimension.height20),
+                          GestureDetector(
+                            onTap: () {
+                              if (Get.find<AuthController>().userIsLoggedIn()) {
+                                Get.find<AuthController>().clearSharedPref();
+                                Get.find<CartController>().clear();
+                                Get.find<CartController>().clearCartHistory();
+                                // Get.find<LocationController>().clearAddress();
+                                Get.offNamed(RouteHelper.getSignInPage());
+                              } else {
+                                Get.snackbar("Error", "You are not logged in");
+                              }
                             },
                             child: AccountWidget(
-                                appIcon: AppIcon(iconData: Icons.location_on, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: AppColors.yellowColor,),
-                                bigText: BigText(text: "Fill Address")),
-                          );
-                        } else {
-                          return GestureDetector(
-                            onTap: () {
-                              Get.toNamed(RouteHelper.getAddressPage());
-                            },
-                            child: AccountWidget(
-                                appIcon: AppIcon(iconData: Icons.location_on, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: AppColors.yellowColor,),
-                                bigText: BigText(text: "Your address")),
-                          );
-                        }
-                      }),
-                      SizedBox(height: Dimension.height20,),
-                      //mess
-                      AccountWidget(
-                          appIcon: AppIcon(iconData: Icons.message_outlined, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: Colors.red,),
-                          bigText: BigText(text: "Message")),
-                      SizedBox(height: Dimension.height20,),
-
-                      GestureDetector(
-                        onTap: () {
-                          _showSharedData(context);
-                        },
-                        child: AccountWidget(
-                            appIcon: AppIcon(iconData: Icons.message_outlined, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: Colors.red,),
-                            bigText: BigText(text: "Xem Dữ liệu")),
+                                appIcon: AppIcon(
+                                  iconData: Icons.logout,
+                                  size: Dimension.height50,
+                                  color: Colors.white,
+                                  iconSize: Dimension.height20,
+                                  colorBackGroundColor: Colors.red,
+                                ),
+                                bigText: BigText(text: "Logout")),
+                          ),
+                          SizedBox(
+                            height: Dimension.height20,
+                          ),
+                        ],
                       ),
-                      SizedBox(height: Dimension.height20,),
-
-                      GestureDetector(
-                        onTap: () {
-                          if (Get.find<AuthController>().userIsLoggedIn()) {
-                            Get.find<AuthController>().clearSharedPref();
-                            Get.find<CartController>().clear();
-                            Get.find<CartController>().clearCartHistory();
-                            // Get.find<LocationController>().clearAddress();
-                            Get.offNamed(RouteHelper.getSignInPage());
-                          } else {
-                            Get.snackbar("Error", "You are not logged in");
-                          }
-                        },
-                        child: AccountWidget(
-                            appIcon: AppIcon(iconData: Icons.logout, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: Colors.red,),
-                            bigText: BigText(text: "Logout")),
-                      ),
-                      SizedBox(height: Dimension.height20,),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ) : Container(
-          child: // Add this inside the Column widget where you want to place the button
-          GestureDetector(
-            onTap: () {
-              // Define the action to be performed on button tap
-              _showSharedData(context);
-            },
-            child: Container(
-              width: Dimension.width100 * 3,
-              height: Dimension.height20 * 5,
-              margin: EdgeInsets.only(left: Dimension.width20, right: Dimension.width20),
-              decoration: BoxDecoration(
-                color: AppColors.mainColor,
-                borderRadius: BorderRadius.circular(Dimension.radius20),
-              ),
-              child: Center(
-                child: BigText(
-                  text: "Xem dữ liệu",
-                  color: Colors.white,
-                  size: Dimension.font_size20 + Dimension.font_size20 / 2,
-                ),
-              ),
-            ),
-          ),
-        ))
+                    ),
+                  )
+                : Center(
+                    child:
+                        CustomLoader(), // Hiển thị bộ tải khi đang tải dữ liệu
+                  ))
             : Container(
                 color: Colors.white,
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: double.maxFinite,
-                        height: Dimension.height20*8,
-                        margin: EdgeInsets.only(left: Dimension.width20, right: Dimension.width20),
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: double.maxFinite,
+                      height: Dimension.height20 * 8,
+                      margin: EdgeInsets.only(
+                          left: Dimension.width20, right: Dimension.width20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(Dimension.radius20),
+                        image: const DecorationImage(
+                          fit: BoxFit.fill,
+                          image: AssetImage("assets/image/sign5.png"),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: Dimension.height20,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.offNamed(RouteHelper.getSignInPage());
+                      },
+                      child: Container(
+                        width: Dimension.width100 * 3,
+                        height: Dimension.height20 * 5,
+                        margin: EdgeInsets.only(
+                            left: Dimension.width20, right: Dimension.width20),
                         decoration: BoxDecoration(
-                          // color: Colors.blueAccent,
-                          borderRadius: BorderRadius.circular(Dimension.radius20),
-                          image: const DecorationImage(
-                            fit: BoxFit.fill,
-                            image: AssetImage("assets/image/sign5.png"),
+                          color: AppColors.mainColor,
+                          borderRadius:
+                              BorderRadius.circular(Dimension.radius20),
+                        ),
+                        child: Center(
+                          child: BigText(
+                            text: "Sign In",
+                            color: Colors.white,
+                            size: Dimension.font_size20 +
+                                Dimension.font_size20 / 2,
                           ),
                         ),
                       ),
-                      SizedBox(height: Dimension.height20,),
-                      GestureDetector(
-                        onTap: () {
-                          Get.offNamed(RouteHelper.getSignInPage());
-                        },
-                        child: Container(
-                          width: Dimension.width100*3,
-                          height: Dimension.height20*5,
-                          margin: EdgeInsets.only(left: Dimension.width20, right: Dimension.width20),
-                          decoration: BoxDecoration(
-                            color: AppColors.mainColor,
-                            borderRadius: BorderRadius.circular(Dimension.radius20),
-
-                          ),
-                          child: Center(child: BigText(text: "Sign In", color: Colors.white, size: Dimension.font_size20 + Dimension.font_size20 / 2,)),
-                        ),
-                      ),
-
-                    ],
-                  )
-                ),
-        );
+                    ),
+                  ],
+                )),
+              );
       }),
     );
   }
