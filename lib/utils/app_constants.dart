@@ -11,6 +11,7 @@ class AppConstants {
   static const String REGISTRATION_URI = "/api/auth/register";
   static const String LOGIN_URI = "/api/auth/login";
   static const String USER_INFO_URI = "/api/customer/info";
+  static const String USER_INFO_UPDATE_URI = "/api/customer/update-profile";
   static const String GEOCODE_URI = "/api/config/geocode-api";
   static const String API_KEY = "AIzaSyCgSkUqL1ZHlrlEYYFglBDL7TGzG-DzE2Q";
 

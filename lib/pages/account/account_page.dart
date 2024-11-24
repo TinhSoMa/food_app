@@ -93,7 +93,10 @@ class AccountPage extends StatelessWidget {
                           // Nút Update Info
                           GestureDetector(
                             onTap: () {
-                              Get.toNamed(RouteHelper.getUpdateInfo());
+                              Get.toNamed(RouteHelper.getUpdateInfo())?.then((_) {
+                                // Sau khi cập nhật thông tin xong, gọi lại dữ liệu người dùng
+                                Get.find<UserController>().getUserData();
+                              });
                             },
                             child: Container(
                               margin: EdgeInsets.only(
