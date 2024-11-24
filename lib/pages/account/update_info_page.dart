@@ -33,6 +33,12 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white,),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: BigText(text: "Cập nhật thông tin", color: Colors.white),
         backgroundColor: AppColors.mainColor,
       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/base/custom_loader.dart';
 import 'package:food_app/controllers/cart_controller.dart';
-import 'package:food_app/controllers/location_controller.dart';
 import 'package:food_app/controllers/user_controller.dart';
+import 'package:food_app/pages/account/chatbot.dart';
 import 'package:food_app/utils/colors.dart';
 import 'package:food_app/widgets/account_widget.dart';
 import 'package:food_app/widgets/app_icon.dart';
@@ -68,6 +68,17 @@ class AccountPage extends StatelessWidget {
           size: 24,
           color: Colors.white,
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.question_answer, color: Colors.white,),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CustomerChatbotPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: GetBuilder<UserController>(builder: (userController) {
         return userIsLoggedIn
