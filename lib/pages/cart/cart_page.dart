@@ -212,7 +212,7 @@ class CartPage extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   if(Get.find<AuthController>().userIsLoggedIn()) {
-                    print("Login ???");
+                    print("Đã đăng nhập");
                     if (Get.find<LocationController>().addressList.isEmpty) {
                       Get.toNamed(RouteHelper.getAddressPage());
                     }

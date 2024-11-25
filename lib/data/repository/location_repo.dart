@@ -15,9 +15,11 @@ class LocationRepo {
         "${AppConstants.GEOCODE_URI}?lat=${latLng.latitude}&lng=${latLng.longitude}");
   }
 
-  Future<String?> getUserAddress() async {
+
+  String? getUserAddress() {
     return sharedPreferences.getString(AppConstants.USER_ADDRESS);
   }
+  //addAddress
 
   Future<Response> addUserAddress(AddressModel addressModel) async {
     return await apiClient.postData(AppConstants.ADD_USER_ADDRESS, addressModel.toJson());

@@ -96,23 +96,23 @@ class AccountPage extends StatelessWidget {
                       SizedBox(height: Dimension.height20,),
                       //address
                       GetBuilder<LocationController>(builder: (locationController) {
-                        if (locationController.addressList.isNotEmpty) {
+                        if (userIsLoggedIn&&locationController.addressList.isEmpty) {
                           return GestureDetector(
                             onTap: () {
-                              Get.toNamed(RouteHelper.getAddressPage());
-                            },
-                            child: AccountWidget(
-                                appIcon: AppIcon(iconData: Icons.location_on, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: AppColors.yellowColor,),
-                                bigText: BigText(text: "Your address")),
-                          );
-                        } else {
-                          return GestureDetector(
-                            onTap: () {
-                              Get.toNamed(RouteHelper.getAddressPage());
+                              Get.offNamed(RouteHelper.getAddressPage());
                             },
                             child: AccountWidget(
                                 appIcon: AppIcon(iconData: Icons.location_on, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: AppColors.yellowColor,),
                                 bigText: BigText(text: "Fill Address")),
+                          );
+                        } else {
+                          return GestureDetector(
+                            onTap: () {
+                              Get.offNamed(RouteHelper.getAddressPage());
+                            },
+                            child: AccountWidget(
+                                appIcon: AppIcon(iconData: Icons.location_on, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: AppColors.yellowColor,),
+                                bigText: BigText(text: "Your address")),
                           );
                         }
                       }),
@@ -139,10 +139,10 @@ class AccountPage extends StatelessWidget {
                             Get.find<AuthController>().clearSharedPref();
                             Get.find<CartController>().clear();
                             Get.find<CartController>().clearCartHistory();
-                            // Get.find<LocationController>().clearAddress();
+                            Get.find<LocationController>().clearAddressList();
                             Get.offNamed(RouteHelper.getSignInPage());
                           } else {
-                            Get.snackbar("Error", "You are not logged in");
+                            Get.offNamed(RouteHelper.getSignInPage());
                           }
                         },
                         child: AccountWidget(
@@ -156,31 +156,7 @@ class AccountPage extends StatelessWidget {
               )
             ],
           ),
-        ) : Container(
-          child: // Add this inside the Column widget where you want to place the button
-          GestureDetector(
-            onTap: () {
-              // Define the action to be performed on button tap
-              _showSharedData(context);
-            },
-            child: Container(
-              width: Dimension.width100 * 3,
-              height: Dimension.height20 * 5,
-              margin: EdgeInsets.only(left: Dimension.width20, right: Dimension.width20),
-              decoration: BoxDecoration(
-                color: AppColors.mainColor,
-                borderRadius: BorderRadius.circular(Dimension.radius20),
-              ),
-              child: Center(
-                child: BigText(
-                  text: "Xem dữ liệu",
-                  color: Colors.white,
-                  size: Dimension.font_size20 + Dimension.font_size20 / 2,
-                ),
-              ),
-            ),
-          ),
-        ))
+        ) : const CustomLoader())
             : Container(
                 color: Colors.white,
                 child: Center(
