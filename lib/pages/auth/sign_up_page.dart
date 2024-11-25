@@ -75,7 +75,7 @@ class SignUpPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: GetBuilder<AuthController>(builder: (_authControllerBuilder){
-        return _authControllerBuilder.isLoading?SingleChildScrollView(
+        return !_authControllerBuilder.isLoading?SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [

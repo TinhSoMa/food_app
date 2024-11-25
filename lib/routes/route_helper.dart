@@ -70,12 +70,12 @@ class RouteHelper {
           return const CartPage();
         },
         transition: Transition.fadeIn),
-    GetPage(
-        name: addAddress,
-        page: () {
-          return const AddressPage();
-        },
-        transition: Transition.fadeIn),
+    // GetPage(
+    //     name: addAddress,
+    //     page: () {
+    //       return const AddressPage();
+    //     },
+    //     transition: Transition.fadeIn),
     GetPage(
         name: updateInfo,
         page: () => const UpdateInfoPage(),
