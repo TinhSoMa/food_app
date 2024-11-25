@@ -75,7 +75,8 @@ class SignUpPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: GetBuilder<AuthController>(builder: (_authControllerBuilder){
-        return _authControllerBuilder.isLoading?SingleChildScrollView(
+        // print("sign up page " + _authControllerBuilder.isLoading.toString());
+        return !_authControllerBuilder.isLoading?SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
@@ -155,7 +156,7 @@ class SignUpPage extends StatelessWidget {
 
             ],
           ),
-        ):CustomLoader();
+        ):const CustomLoader();
       }),
     );
   }
