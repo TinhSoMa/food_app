@@ -8,6 +8,7 @@ import 'package:food_app/controllers/location_controller.dart';
 import 'package:food_app/controllers/user_controller.dart';
 import 'package:food_app/models/address_model.dart';
 import 'package:food_app/models/user_model.dart';
+import 'package:food_app/pages/address/pick_address_map.dart';
 import 'package:food_app/routes/route_helper.dart';
 import 'package:food_app/utils/colors.dart';
 import 'package:food_app/utils/dimension.dart';
@@ -38,6 +39,7 @@ class _AddAddressPageState extends State<AddressPage> {
   late LatLng _initialPosition = LatLng(
       16.4637, 107.5909);
 
+
   @override
   void initState() {
     super.initState();
@@ -47,11 +49,35 @@ class _AddAddressPageState extends State<AddressPage> {
     if (_isLogged && Get.find<UserController>().userModel == null) {
       print("Load du lieu user tu server");
       Get.find<UserController>().getUserData();
+    } else {
+      print("User da dang nhap");
     }
 
+    if (Get.find<LocationController>().getUserAddressFromLocal() == ""
+    ) {
+      // Kiểm tra và tải dữ liệu từ cơ sở dữ liệu
+      // Get.find<LocationController>().loadAddress();
+
+      // Lấy danh sách địa chỉ sau khi tải
+      if (Get.find<LocationController>().addressList.isNotEmpty) {
+        // Lưu địa chỉ cuối cùng từ danh sách
+        Get.find<LocationController>().saveUserAddress(
+          Get.find<LocationController>().addressList.last,
+        );
+        print("Đã lưu địa chỉ: ${Get.find<LocationController>().addressList.last.toJson()}");
+      } else {
+        print("Không tìm thấy địa chỉ nào sau khi tải từ cơ sở dữ liệu.");
+      }
+    }
+
+
+
+
     if (Get.find<LocationController>().addressList.isNotEmpty) {
-      print("Địa chỉ không trống");
+
       Get.find<LocationController>().getUserAddress();
+      // print("Địa chỉ không trống" + Get.find<LocationController>().getAddress["latitude"]);
+
       _cameraPosition = CameraPosition(target: LatLng(
           double.parse(Get.find<LocationController>().getAddress["latitude"]),
           double.parse(Get.find<LocationController>().getAddress["longitude"])
@@ -79,27 +105,26 @@ class _AddAddressPageState extends State<AddressPage> {
         ),
       ),
       body: GetBuilder<UserController>(builder: (userController) {
-        print("userController: " + _contactPersonName.text );
+        // print("userController: " + _contactPersonName.text );
         if(userController.userModel != null && _contactPersonName.text.isEmpty) {
           _contactPersonName.text = userController.userModel.name;
           _contactPersonNumber.text = userController.userModel.phone;
           if (Get.find<LocationController>().addressList.isNotEmpty) {
-            print("Địa chỉ không trống");
+            print("Địa chỉ không trống " + Get.find<LocationController>().getUserAddress().address);
+
             _addressController.text =  Get.find<LocationController>().getUserAddress().address;
             // _addressController.text = Get.find<LocationController>().addressList[0].address;
-            // print("_addressController.text: 1 " + _addressController.text);
+            print("_addressController.text: 1 " + _addressController.text);
           }
 
         }
         return GetBuilder<LocationController>(builder: (locationController) {
-          _addressController.text = '${locationController.placeMark.street?? ''}'
-              '${locationController.placeMark.subAdministrativeArea?? ''}'
-              ', ${locationController.placeMark.administrativeArea?? ''}'
-              ', ${locationController.placeMark.country?? ''}';
-          // print("_addressController: " + _addressController.text);
+            _addressController.text = '${locationController.placeMark.street?? ''}'
+                '${locationController.placeMark.subAdministrativeArea?? ''}'
+                ' ${locationController.placeMark.administrativeArea?? ''}'
+                ' ${locationController.placeMark.country??''}';
+          print("_addressController: " + _addressController.text);
           // print(locationController.placeMark.toString());
-          // print(locationController.placeMark.runtimeType); // Kiểm tra kiểu dữ liệu của placeMark
-          // print(locationController.placeMark.toString()); // In tất cả các thuộc tính của Placemark
                   return SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,17 +143,26 @@ class _AddAddressPageState extends State<AddressPage> {
                               children: [
                                 RepaintBoundary(
                                   child: GoogleMap(
-                                    mapType: MapType.hybrid,
-                                    initialCameraPosition: CameraPosition(target: _initialPosition, zoom: 17),
+                                    initialCameraPosition:
+                                    CameraPosition(target: _initialPosition, zoom: 17),
+                                    onTap: (latLng) {
+                                      Get.toNamed(RouteHelper.getPickAddresspage(),
+                                      arguments: PickAddressMap(
+                                        fromAddress: true,
+                                        fromSignUp: false,
+                                        googleMapController: locationController.mapController,
+                                      ));
+                                    },
                                     zoomControlsEnabled: false,
                                     compassEnabled: false,
                                     indoorViewEnabled: true,
                                     mapToolbarEnabled: false,
                                     myLocationButtonEnabled: true,
                                     onCameraIdle: () {
-                                      Timer(const Duration(seconds: 2), () {
+                                      Timer(Duration(seconds: 1), () {
                                         locationController.updatePosition(_cameraPosition, true);
                                       });
+                                      // locationController.updatePosition(_cameraPosition, true);
                                     },
                                     onCameraMove: ((position) => _cameraPosition = position),
                                     onMapCreated: (GoogleMapController controller) {
@@ -195,6 +229,25 @@ class _AddAddressPageState extends State<AddressPage> {
                           child: BigText(text: "Your Phone"),
                         ),
                         AppTextField(textEditingController: _contactPersonNumber, hintText: "Your phone", icon: Icons.phone),
+                        SizedBox(height: Dimension.height5,),
+                        GestureDetector(
+                          onTap: () {
+                            Get.find<LocationController>().addressList.forEach((element) {
+                              print("Address: " + element.address);
+                            });
+                          },
+                          child: Container(
+                            padding: EdgeInsets.only(top: Dimension.height20, bottom: Dimension.height20, left: Dimension.width20, right: Dimension.width20),
+                            margin: EdgeInsets.only(right: Dimension.height20),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(Dimension.radius20),
+                                color: AppColors.mainColor
+                            ),
+
+                            child: BigText(text: "Load", color: Colors.white, textOverflow: TextOverflow.clip, size: Dimension.font_size16,),
+
+                          ),
+                        ),
                       ],
                     ),
                   );
@@ -235,23 +288,32 @@ class _AddAddressPageState extends State<AddressPage> {
                       controller.addAddress(addressModel).then((response) {
                         if (response.isSuccess) {
                           Get.toNamed(RouteHelper.getInitial());
-                          showCustomerSnackBar("Success", isError: true);
+                          showCustomerSnackBar("Success", isError: false);
                         } else {
                           showCustomerSnackBar("Fail", isError: true);
 
                         }
                       });
                     },
-                    child: Container(
-                      padding: EdgeInsets.only(top: Dimension.height20, bottom: Dimension.height20, left: Dimension.width20, right: Dimension.width20),
-                      margin: EdgeInsets.only(right: Dimension.height20),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(Dimension.radius20),
-                          color: AppColors.mainColor
-                      ),
+                    child: Row(
 
-                      child: BigText(text: "Save", color: Colors.white, textOverflow: TextOverflow.clip, size: Dimension.font_size16,),
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(top: Dimension.height20, bottom: Dimension.height20, left: Dimension.width20, right: Dimension.width20),
+                          margin: EdgeInsets.only(right: Dimension.height20),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(Dimension.radius20),
+                              color: AppColors.mainColor
+                          ),
+
+                          child: BigText(text: "Save", color: Colors.white, textOverflow: TextOverflow.clip, size: Dimension.font_size16,),
+
+                        ),
+
+                      ],
                     ),
+
+
                   )
                 ],
               ),

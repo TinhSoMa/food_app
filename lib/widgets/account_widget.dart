@@ -23,7 +23,11 @@ class AccountWidget extends StatelessWidget {
           children: [
             appIcon,
             SizedBox(width: Dimension.width20,),
-            bigText
+            Expanded(child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: bigText,
+            )
+            )
           ],
         ),
       ),

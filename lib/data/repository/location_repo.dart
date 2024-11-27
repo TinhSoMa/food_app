@@ -16,8 +16,8 @@ class LocationRepo {
   }
 
 
-  String? getUserAddress() {
-    return sharedPreferences.getString(AppConstants.USER_ADDRESS);
+  String getUserAddress() {
+    return sharedPreferences.getString(AppConstants.USER_ADDRESS) ?? "";
   }
   //addAddress
 
@@ -37,6 +37,10 @@ class LocationRepo {
 
   void clearLocation() {
     sharedPreferences.remove(AppConstants.USER_ADDRESS);
+  }
+
+  Future<Response> getZone(String lat, String lng) async {
+    return await apiClient.getData("${AppConstants.ZONE_URI}?lat=$lat&lng=$lng");
   }
 
 }

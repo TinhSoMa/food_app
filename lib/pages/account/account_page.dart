@@ -17,6 +17,7 @@ import '../../controllers/auth_controller.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
+
   Future<void> _showSharedData(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -51,15 +52,40 @@ class AccountPage extends StatelessWidget {
     );
   }
 
+  Future<void> _load() async {
+    await Get.find<LocationController>().loadAddress();
+    print("Load dữ liệu" + Get.find<LocationController>().addressList.first.toJson().toString());
+    Get.find<LocationController>().saveUserAddress(
+      Get.find<LocationController>().addressList.first,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    bool userIsLoggedIn = Get.find<AuthController>().userIsLoggedIn();
-    if (userIsLoggedIn) {
-      Get.find<UserController>().getUserData();
-      print("User is logged in");
-      // _showSharedData(context);
-    }
+    bool userIsLoggedIn = false;
+    // Get.find<LocationController>().loadAddress();
+    // Get.find<LocationController>().saveUserAddress(
+    //   Get.find<LocationController>().addressList.last,
+    // );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Get.find<LocationController>().loadAddress();
+
+      userIsLoggedIn = Get.find<AuthController>().userIsLoggedIn();
+      if (userIsLoggedIn) {
+        Get.find<UserController>().getUserData();
+      }
+      _load();
+      //  Get.find<LocationController>().loadAddress();
+      // Get.find<LocationController>().saveUserAddress(
+      //   Get.find<LocationController>().addressList.last,
+      // );
+    });
+    // bool userIsLoggedIn = Get.find<AuthController>().userIsLoggedIn();
+    // if (userIsLoggedIn) {
+    //   Get.find<UserController>().getUserData();
+    //   print("User is logged in");
+    //   // _showSharedData(context);
+    // }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.mainColor,
@@ -112,7 +138,7 @@ class AccountPage extends StatelessWidget {
                             },
                             child: AccountWidget(
                                 appIcon: AppIcon(iconData: Icons.location_on, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: AppColors.yellowColor,),
-                                bigText: BigText(text: "Your address")),
+                                bigText: BigText(text: locationController.addressList.first.address)),
                           );
                         }
                       }),
@@ -130,6 +156,23 @@ class AccountPage extends StatelessWidget {
                         child: AccountWidget(
                             appIcon: AppIcon(iconData: Icons.message_outlined, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: Colors.red,),
                             bigText: BigText(text: "Xem Dữ liệu")),
+                      ),
+                      SizedBox(height: Dimension.height20,),
+
+                      GestureDetector(
+                        onTap: () {
+                          Get.find<LocationController>().getAddressList();
+                          // var scs= Get.find<LocationController>().addressList.last.address;
+                          // Get.find<LocationController>().addressList.forEach((element) {
+                          //   print(element.address);
+                          // });
+                          var ss =  Get.find<LocationController>().addressList.first;
+                          print("scsc"+ss.address);
+                          // print("Load dữ liệu "+ scs.toString());
+                        },
+                        child: AccountWidget(
+                            appIcon: AppIcon(iconData: Icons.message_outlined, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: Colors.red,),
+                            bigText: BigText(text: "Load address")),
                       ),
                       SizedBox(height: Dimension.height20,),
 

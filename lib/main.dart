@@ -8,6 +8,7 @@ import 'package:food_app/pages/auth/sign_up_page.dart';
 import 'package:food_app/pages/splash/splash_page.dart';
 
 import 'package:food_app/routes/route_helper.dart';
+import 'package:food_app/utils/colors.dart';
 import 'package:get/get.dart';
 
 import 'helper/dependencies.dart' as dep;
@@ -35,6 +36,10 @@ class MyApp extends StatelessWidget {
           // home: SplashScreen(),
           initialRoute: RouteHelper.getSplashPage(),
           getPages: RouteHelper.routes,
+          theme: ThemeData(
+            primaryColor: AppColors.mainColor,
+            fontFamily: 'Poppins',
+          )
         );
       });
     });
