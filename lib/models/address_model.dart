@@ -29,7 +29,7 @@ class AddressModel {
   String get addressType => _addressType;
   String? get contactPersonName => _contactPersonName;
   String? get contactPersonNumber => _contactPersonNumber;
-  String get latitude => _longitude;
+  String get latitude => _latitude;
   String get longitude => _longitude;
 
   AddressModel.fromJson(Map<String, dynamic> json) {

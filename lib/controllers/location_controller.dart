@@ -140,23 +140,51 @@ class LocationController extends GetxController implements GetxService {
     }
   }
 
+  // Future<String> getAddressFromLatLng(LatLng latLng) async {
+  //   List<Placemark> placemarks = await placemarkFromCoordinates(
+  //       latLng.latitude, latLng.longitude);
+  //   _placeMark = placemarks[0];
+  //   _getAddress = {
+  //     "address": _placeMark.name,
+  //     "city": _placeMark.locality,
+  //     "state": _placeMark.administrativeArea,
+  //     "country": _placeMark.country,
+  //     // "postalCode": _placeMark.postalCode,
+  //     "latitude": latLng.latitude,
+  //     "longitude": latLng.longitude
+  //   };
+  //   _loading = false;
+  //   update();
+  //   print("getAddressFromLatLng"+_getAddress.toString());
+  //   return _placeMark.name!;
+  // }
+
+
   Future<String> getAddressFromLatLng(LatLng latLng) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-        latLng.latitude, latLng.longitude);
-    _placeMark = placemarks[0];
-    _getAddress = {
-      "address": _placeMark.name,
-      "city": _placeMark.locality,
-      "state": _placeMark.administrativeArea,
-      "country": _placeMark.country,
-      // "postalCode": _placeMark.postalCode,
-      "latitude": latLng.latitude,
-      "longitude": latLng.longitude
-    };
-    _loading = false;
-    update();
-    print("getAddressFromLatLng"+_getAddress.toString());
-    return _placeMark.name!;
+    print("tọa độ: " + latLng.latitude.toString() + " " + latLng.longitude.toString());
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          latLng.latitude, latLng.longitude);
+      _placeMark = placemarks[0];
+      _getAddress = {
+        // "Name": placeMark.name,
+        "address": placeMark.street,
+        // "ISO Country Code": placeMark.isoCountryCode,
+        "country": placeMark.country,
+        // "Postal code": placeMark.postalCode,
+        "state": placeMark.administrativeArea,
+        // "state": placeMark.subAdministrativeArea,
+        "city": placeMark.locality,
+        "sublocality2": placeMark.subLocality,
+        // "Thoroughfare": placeMark.thoroughfare,
+        // "Subthoroughfare": placeMark.subThoroughfare,
+        "latitude": latLng.latitude,
+        "longitude": latLng.longitude
+      };
+      _loading = false;
+      update();
+      print("getAddressFromLatLng" + _getAddress.toString());
+      return _placeMark.name!;
+
   }
 
   late Map<String, dynamic> _getAddress;
@@ -210,9 +238,13 @@ class LocationController extends GetxController implements GetxService {
      _addressList = [];
      _allAddressList = [];
      response.body.forEach((address) {
+       print("address: "+address.toString());
        AddressModel addressModel = AddressModel.fromJson(address);
        _addressList.add(addressModel);
        _allAddressList.add(addressModel);
+        print("addressModel: "+addressModel.latitude.toString() + " " + addressModel.longitude.toString());
+       print("Raw JSON: ${address.toString()}");
+
        getAddressFromLatLng(LatLng(double.parse(addressModel.latitude), double.parse(addressModel.longitude)));
 
      });

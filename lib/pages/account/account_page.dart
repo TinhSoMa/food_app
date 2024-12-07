@@ -8,9 +8,7 @@ import 'package:food_app/widgets/account_widget.dart';
 import 'package:food_app/widgets/app_icon.dart';
 import 'package:food_app/widgets/big_text.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../routes/route_helper.dart';
 import '../../utils/dimension.dart';
 import '../../controllers/auth_controller.dart';
@@ -60,33 +58,23 @@ class AccountPage extends StatelessWidget {
     );
   }
 
+  Future<void> _loadResource() async {
+    await Get.find<LocationController>().getAddressList();
+    print("Load dữ liệu" + Get.find<LocationController>().addressList.first.toJson().toString());
+    Get.find<LocationController>().saveUserAddress(
+      Get.find<LocationController>().addressList.first,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool userIsLoggedIn = false;
-    // Get.find<LocationController>().loadAddress();
-    // Get.find<LocationController>().saveUserAddress(
-    //   Get.find<LocationController>().addressList.last,
-    // );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Get.find<LocationController>().loadAddress();
+    bool userIsLoggedIn = Get.find<AuthController>().userIsLoggedIn();
+    if (userIsLoggedIn) {
+      Get.find<UserController>().getUserData();
+      Get.find<LocationController>().loadAddress();
+    }
 
-      userIsLoggedIn = Get.find<AuthController>().userIsLoggedIn();
-      if (userIsLoggedIn) {
-        Get.find<UserController>().getUserData();
-      }
-      _load();
-      //  Get.find<LocationController>().loadAddress();
-      // Get.find<LocationController>().saveUserAddress(
-      //   Get.find<LocationController>().addressList.last,
-      // );
-    });
-    // bool userIsLoggedIn = Get.find<AuthController>().userIsLoggedIn();
-    // if (userIsLoggedIn) {
-    //   Get.find<UserController>().getUserData();
-    //   print("User is logged in");
-    //   // _showSharedData(context);
-    // }
-    return Scaffold(
+    return RefreshIndicator(onRefresh: _loadResource, child: Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.mainColor,
         title: BigText(text: "Profile", size: 24, color: Colors.white,),
@@ -122,7 +110,7 @@ class AccountPage extends StatelessWidget {
                       SizedBox(height: Dimension.height20,),
                       //address
                       GetBuilder<LocationController>(builder: (locationController) {
-                        if (userIsLoggedIn&&locationController.addressList.isEmpty) {
+                        if (userIsLoggedIn && locationController.addressList.isEmpty) {
                           return GestureDetector(
                             onTap: () {
                               Get.offNamed(RouteHelper.getAddressPage());
@@ -138,7 +126,7 @@ class AccountPage extends StatelessWidget {
                             },
                             child: AccountWidget(
                                 appIcon: AppIcon(iconData: Icons.location_on, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: AppColors.yellowColor,),
-                                bigText: BigText(text: locationController.addressList.first.address)),
+                                bigText: BigText(text: locationController.addressList.isNotEmpty ? locationController.addressList.first.address : "No Address")),
                           );
                         }
                       }),
@@ -162,13 +150,8 @@ class AccountPage extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           Get.find<LocationController>().getAddressList();
-                          // var scs= Get.find<LocationController>().addressList.last.address;
-                          // Get.find<LocationController>().addressList.forEach((element) {
-                          //   print(element.address);
-                          // });
                           var ss =  Get.find<LocationController>().addressList.first;
                           print("scsc"+ss.address);
-                          // print("Load dữ liệu "+ scs.toString());
                         },
                         child: AccountWidget(
                             appIcon: AppIcon(iconData: Icons.message_outlined, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: Colors.red,),
@@ -201,47 +184,46 @@ class AccountPage extends StatelessWidget {
           ),
         ) : const CustomLoader())
             : Container(
-                color: Colors.white,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: double.maxFinite,
-                        height: Dimension.height20*8,
-                        margin: EdgeInsets.only(left: Dimension.width20, right: Dimension.width20),
-                        decoration: BoxDecoration(
-                          // color: Colors.blueAccent,
-                          borderRadius: BorderRadius.circular(Dimension.radius20),
-                          image: const DecorationImage(
-                            fit: BoxFit.fill,
-                            image: AssetImage("assets/image/sign5.png"),
-                          ),
-                        ),
+          color: Colors.white,
+          child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: double.maxFinite,
+                    height: Dimension.height20*8,
+                    margin: EdgeInsets.only(left: Dimension.width20, right: Dimension.width20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Dimension.radius20),
+                      image: const DecorationImage(
+                        fit: BoxFit.fill,
+                        image: AssetImage("assets/image/sign5.png"),
                       ),
-                      SizedBox(height: Dimension.height20,),
-                      GestureDetector(
-                        onTap: () {
-                          Get.offNamed(RouteHelper.getSignInPage());
-                        },
-                        child: Container(
-                          width: Dimension.width100*3,
-                          height: Dimension.height20*5,
-                          margin: EdgeInsets.only(left: Dimension.width20, right: Dimension.width20),
-                          decoration: BoxDecoration(
-                            color: AppColors.mainColor,
-                            borderRadius: BorderRadius.circular(Dimension.radius20),
+                    ),
+                  ),
+                  SizedBox(height: Dimension.height20,),
+                  GestureDetector(
+                    onTap: () {
+                      Get.offNamed(RouteHelper.getSignInPage());
+                    },
+                    child: Container(
+                      width: Dimension.width100*3,
+                      height: Dimension.height20*5,
+                      margin: EdgeInsets.only(left: Dimension.width20, right: Dimension.width20),
+                      decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        borderRadius: BorderRadius.circular(Dimension.radius20),
 
-                          ),
-                          child: Center(child: BigText(text: "Sign In", color: Colors.white, size: Dimension.font_size20 + Dimension.font_size20 / 2,)),
-                        ),
                       ),
+                      child: Center(child: BigText(text: "Sign In", color: Colors.white, size: Dimension.font_size20 + Dimension.font_size20 / 2,)),
+                    ),
+                  ),
 
-                    ],
-                  )
-                ),
+                ],
+              )
+          ),
         );
       }),
-    );
+    ));
   }
 }

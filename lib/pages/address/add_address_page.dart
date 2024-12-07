@@ -113,17 +113,23 @@ class _AddAddressPageState extends State<AddressPage> {
             print("Địa chỉ không trống " + Get.find<LocationController>().getUserAddress().address);
 
             _addressController.text =  Get.find<LocationController>().getUserAddress().address;
+            // _addressController.text =  Get.find<LocationController>().getUserAddress().latitude;
+
             // _addressController.text = Get.find<LocationController>().addressList[0].address;
             print("_addressController.text: 1 " + _addressController.text);
+
           }
 
         }
         return GetBuilder<LocationController>(builder: (locationController) {
-            _addressController.text = '${locationController.placeMark.street?? ''}'
-                '${locationController.placeMark.subAdministrativeArea?? ''}'
-                ' ${locationController.placeMark.administrativeArea?? ''}'
-                ' ${locationController.placeMark.country??''}';
+          // if (locationController.placeMark.street != null) {
+          _addressController.text = '${locationController.placeMark.street?? ''}'
+          '${locationController.placeMark.subAdministrativeArea?? ''}'
+          ' ${locationController.placeMark.administrativeArea?? ''}'
+          ' ${locationController.placeMark.country??''}';
           print("_addressController: " + _addressController.text);
+          // }
+
           // print(locationController.placeMark.toString());
                   return SingleChildScrollView(
                     child: Column(

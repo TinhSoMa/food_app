@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/base/custom_buttom.dart';
 import 'package:food_app/controllers/location_controller.dart';
+import 'package:food_app/pages/address/widgets/search_location_dialogi_page.dart';
 import 'package:food_app/routes/route_helper.dart';
 import 'package:food_app/utils/colors.dart';
 import 'package:food_app/utils/dimension.dart';
@@ -32,14 +33,16 @@ class _PickAddressMapState extends State<PickAddressMap> {
     // TODO: implement initState
     super.initState();
     if(Get.find<LocationController>().addressList.isEmpty) {
-      _initialPosition = LatLng(16.4637, 107.5909);
+      _initialPosition = const LatLng(16.4637, 107.5909);
       _cameraPosition = CameraPosition(target: _initialPosition, zoom: 17);
       
     } else {
-      if(Get.find<LocationController>().addressList.isNotEmpty) {
+      if(Get.find<LocationController>().addressList.isNotEmpty && Get.find<LocationController>().getAddress.isNotEmpty) {
+        // print("Address: ${Get.find<LocationController>().getAddress}");
         var latitude = Get.find<LocationController>().getAddress["latitude"];
         var longitude = Get.find<LocationController>().getAddress["longitude"];
-
+        // double latitude = Get.find<LocationController>().getUserAddress().latitude;
+        // var longitude = Get.find<LocationController>().getUserAddress().longitude;
         if (latitude is String) {
           latitude = double.parse(latitude);
         }
@@ -77,6 +80,12 @@ class _PickAddressMapState extends State<PickAddressMap> {
                     onCameraIdle: () {
                       Get.find<LocationController>().updatePosition(_cameraPosition, false);
                     },
+                    onMapCreated: (GoogleMapController mapController) {
+                      _mapController = mapController;
+                      if(!widget.fromSignUp) {
+                        Get.find<LocationController>().setMapController(_mapController);
+                      }
+                    },
                     myLocationEnabled: true,
                     myLocationButtonEnabled: true,
 
@@ -84,42 +93,51 @@ class _PickAddressMapState extends State<PickAddressMap> {
                   Center(
                     child: !locationController.loading? Image.asset("assets/image/pick_marker.png", width: 50, height: 50,): const CircularProgressIndicator(),
                   ),
+                  // Address
                   Positioned(
                     top: Dimension.height45,
                       left: Dimension.width20,
                       right: Dimension.width20,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: Dimension.width20),
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 1,
-                              blurRadius: 7,
-                              offset: const Offset(0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(Icons.location_on, size: 25, color: AppColors.yellowColor,),
-                            Expanded(child: Text(
-                              '${locationController.pickedPlaceMark.name??""},'
-                                  '${locationController.pickedPlaceMark.locality??""},'
-                                  '${locationController.pickedPlaceMark.administrativeArea??""},'
-                                  '${locationController.pickedPlaceMark.country??""}',
-                              style: TextStyle(color: AppColors.yellowColor, fontSize: Dimension.font_size16),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ))
-                          ],
-                        ),
+                      child: InkWell(
+                        onTap: () {
+                          Get.dialog(LocationDialogue(googleMapController: _mapController));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: Dimension.width20),
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 7,
+                                offset: const Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(Icons.location_on, size: 25, color: AppColors.yellowColor,),
+                              Expanded(child: Text(
+                                '${locationController.pickedPlaceMark.name??""},'
+                                    '${locationController.pickedPlaceMark.locality??""},'
+                                    '${locationController.pickedPlaceMark.administrativeArea??""},'
+                                    '${locationController.pickedPlaceMark.country??""}',
+                                style: TextStyle(color: AppColors.yellowColor, fontSize: Dimension.font_size16),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              )),
+                              SizedBox(width: Dimension.width10,),
+                              Icon(Icons.search, size: 25, color: AppColors.yellowColor),
+                            ],
+                          ),
 
+                        ),
                       )
                   ),
+                  // Pick Address
                   Positioned(
                       bottom: Dimension.height100*2,
                       left: Dimension.width20,
@@ -147,7 +165,8 @@ class _PickAddressMapState extends State<PickAddressMap> {
                           }
                         }
                       },),
-                  )
+                  ),
+
                 ],
               ),
             ),

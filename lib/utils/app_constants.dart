@@ -2,7 +2,7 @@ class AppConstants {
   static const String APP_NAME = "shopping_food";
   static const int APP_VERSION = 1;
 
-  static const String BASE_URL = "https://caring-talented-slug.ngrok-free.app";
+  static const String BASE_URL = "https://united-summary-pigeon.ngrok-free.app";
 
   static const String POPULAR_PRODUCT_URI = "/api/products/popular";
   static const String RECOMMENDED_PRODUCT_URI = "/api/products/recommended";
@@ -14,6 +14,7 @@ class AppConstants {
   static const String USER_INFO_UPDATE_URI = "/api/customer/update-profile";
   static const String GEOCODE_URI = "/api/config/geocode-api";
   static const String API_KEY = "AIzaSyCgSkUqL1ZHlrlEYYFglBDL7TGzG-DzE2Q";
+  static const String ZONE_URI = "/api/config/get-zone-id";
 
   static const String USER_ADDRESS = "user-address";
   static const String ADD_USER_ADDRESS = "/api/customer/address/add";
