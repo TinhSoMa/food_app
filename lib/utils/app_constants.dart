@@ -15,6 +15,7 @@ class AppConstants {
   static const String GEOCODE_URI = "/api/config/geocode-api";
   static const String API_KEY = "AIzaSyCgSkUqL1ZHlrlEYYFglBDL7TGzG-DzE2Q";
   static const String ZONE_URI = "/api/config/get-zone-id";
+  static const String SEARCH_LOCATION_URI = "/api/config/place-api-autocomplete";
 
   static const String USER_ADDRESS = "user-address";
   static const String ADD_USER_ADDRESS = "/api/customer/address/add";

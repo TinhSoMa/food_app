@@ -11,10 +11,11 @@ class UserController extends GetxController implements GetxService {
   UserController({required this.userRepo});
 
   bool _isLoading = false;
-  late UserModel _userModel;
-
   bool get isLoading => _isLoading;
+
+  late UserModel _userModel;
   UserModel get userModel => _userModel;
+
 
   Future<ResponseModel> getUserData() async {
     _isLoading = true;
@@ -32,6 +33,7 @@ class UserController extends GetxController implements GetxService {
     update();
     return responseModel;
   }
+
   Future<ResponseModel> updateUserInfo(Map<String, dynamic> updateData) async {
   try {
     _isLoading = true;

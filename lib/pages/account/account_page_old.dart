@@ -13,95 +13,74 @@ import '../../routes/route_helper.dart';
 import '../../utils/dimension.dart';
 import '../../controllers/auth_controller.dart';
 
-class AccountPage extends StatefulWidget {
+class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
 
+  Future<void> _showSharedData(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  @override
-  State<AccountPage> createState() => _AccountPageState();
-}
+    // Lấy tất cả các khóa và giá trị từ SharedPreferences
+    Map<String, dynamic> allPrefs = {};
+    for (String key in prefs.getKeys()) {
+      allPrefs[key] = prefs.get(key);
+    }
 
-Future<void> _showSharedData(BuildContext context) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  // Lấy tất cả các khóa và giá trị từ SharedPreferences
-  Map<String, dynamic> allPrefs = {};
-  for (String key in prefs.getKeys()) {
-    allPrefs[key] = prefs.get(key);
-  }
-
-  // Chuyển đổi Map thành một chuỗi để hiển thị
-  StringBuffer dataBuffer = StringBuffer();
-  allPrefs.forEach((key, value) {
-    dataBuffer.writeln('$key: $value');
-  });
-
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Shared Data"),
-        content: Text(dataBuffer.isNotEmpty ? dataBuffer.toString() : "No data found"),
-        actions: [
-          TextButton(
-            child: Text("OK"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-
-Future<void> _load() async {
-  await Get.find<LocationController>().loadAddress();
-  print("Load dữ liệu" + Get.find<LocationController>().addressList.first.toJson().toString());
-  Get.find<LocationController>().saveUserAddress(
-    Get.find<LocationController>().addressList.first,
-  );
-}
-
-Future<void> _loadResource() async {
-  await Get.find<LocationController>().getAddressList();
-  print("Load dữ liệu" + Get.find<LocationController>().addressList.first.toJson().toString());
-  Get.find<LocationController>().saveUserAddress(
-    Get.find<LocationController>().addressList.first,
-  );
-}
-
-
-
-class _AccountPageState extends State<AccountPage> {
-  late bool userIsLoggedIn = Get.find<AuthController>().userIsLoggedIn();
-  late bool loadData = false;
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (userIsLoggedIn) {
-        await Get.find<UserController>().getUserData();
-        await Get.find<LocationController>().getAddressList();
-        setState(() {
-          loadData = true;
-        });
-      }
+    // Chuyển đổi Map thành một chuỗi để hiển thị
+    StringBuffer dataBuffer = StringBuffer();
+    allPrefs.forEach((key, value) {
+      dataBuffer.writeln('$key: $value');
     });
 
-
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Shared Data"),
+          content: Text(dataBuffer.isNotEmpty ? dataBuffer.toString() : "No data found"),
+          actions: [
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
+
+  Future<void> _load() async {
+    await Get.find<LocationController>().loadAddress();
+    print("Load dữ liệu" + Get.find<LocationController>().addressList.first.toJson().toString());
+    Get.find<LocationController>().saveUserAddress(
+      Get.find<LocationController>().addressList.first,
+    );
+  }
+
+  Future<void> _loadResource() async {
+    await Get.find<LocationController>().getAddressList();
+    print("Load dữ liệu" + Get.find<LocationController>().addressList.first.toJson().toString());
+    Get.find<LocationController>().saveUserAddress(
+      Get.find<LocationController>().addressList.first,
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    print("Load Data" + loadData.toString());
-    return loadData? Scaffold(
+    bool userIsLoggedIn = Get.find<AuthController>().userIsLoggedIn();
+    if (userIsLoggedIn) {
+      Get.find<UserController>().getUserData();
+      Get.find<LocationController>().loadAddress();
+    }
+
+    return RefreshIndicator(onRefresh: _loadResource, child: Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.mainColor,
         title: BigText(text: "Profile", size: 24, color: Colors.white,),
       ),
       body: GetBuilder<UserController>(builder: (userController) {
-        // return Container();
         return userIsLoggedIn ? (!userController.isLoading ? Container(
           width: double.maxFinite,
           margin: EdgeInsets.only(top: Dimension.height20),
@@ -245,9 +224,7 @@ class _AccountPageState extends State<AccountPage> {
               )
           ),
         );
-      }
-      ),
-
-    ) : const CustomLoader();
+      }),
+    ));
   }
 }
