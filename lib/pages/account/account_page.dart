@@ -80,9 +80,14 @@ class _AccountPageState extends State<AccountPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      print("User is logged in " + userIsLoggedIn.toString());
       if (userIsLoggedIn) {
         await Get.find<UserController>().getUserData();
         await Get.find<LocationController>().getAddressList();
+        setState(() {
+          loadData = true;
+        });
+      } else {
         setState(() {
           loadData = true;
         });
