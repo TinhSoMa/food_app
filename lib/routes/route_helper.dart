@@ -1,4 +1,5 @@
 // import 'package:food_app/cart/cart_page.dart';
+import 'package:food_app/models/order_model.dart';
 import 'package:food_app/pages/account/update_info_page.dart';
 import 'package:food_app/pages/address/add_address_page.dart';
 import 'package:food_app/pages/address/pick_address_map.dart';
@@ -6,11 +7,13 @@ import 'package:food_app/pages/auth/sign_in_page.dart';
 import 'package:food_app/pages/food/popular_food_detail.dart';
 import 'package:food_app/pages/home/home_page.dart';
 import 'package:food_app/pages/home/main_food_page.dart';
+import 'package:food_app/pages/payment/payment_page.dart';
 import 'package:food_app/pages/splash/splash_page.dart';
 import 'package:get/get.dart';
 
 import '../pages/cart/cart_page.dart';
 import '../pages/food/recommended_food_detail.dart';
+import '../pages/payment/order_successful_page.dart';
 
 class RouteHelper {
   static const String initial = "/";
@@ -22,6 +25,8 @@ class RouteHelper {
   static const String addAddress = "/add-address-page";
   static const String updateInfo = '/update-info';
   static const String pickAddressMap = '/pick-address-map';
+  static const String paymentPage = '/payment-page';
+  static const String orderSuccess = '/order-success';
 
   static String getInitial() => '$initial';
   static String getPopularFood(int idPage, String page) =>
@@ -34,6 +39,9 @@ class RouteHelper {
   static String getAddressPage() => '$addAddress';
   static String getUpdateInfo() => updateInfo;
   static String getPickAddresspage() => '$pickAddressMap';
+  static String getPaymentPage(String id, int userId) => '$paymentPage?id=$id&userId=$userId';
+  static String getOrderSuccessPage(String orderId, String status) => '$orderSuccess?id=$orderId&status=$status';
+
 
   static List<GetPage> routes = [
     GetPage(name: splashPage, page: () => const SplashScreen()),
@@ -87,6 +95,17 @@ class RouteHelper {
         PickAddressMap _pickAddressMap = Get.arguments;
         return _pickAddressMap;
 
-    })
+    }),
+    GetPage(name: paymentPage, page: () => PaymentPage(
+      orderModel: OrderModel(
+        id: int.parse(Get.parameters['id']!),
+        userId: int.parse(Get.parameters['userId']!)),
+  )
+    ),
+    GetPage(name: orderSuccess, page: ()=> OrderSuccessPage(
+      orderId: Get.parameters['id']!,
+      status: Get.parameters['status']!.toString().contains('success')?1:0,
+    ))
+
   ];
 }

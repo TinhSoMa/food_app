@@ -1,12 +1,15 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food_app/base/no_data_page.dart';
+import 'package:food_app/base/show_customer_snack_bar.dart';
 import 'package:food_app/controllers/cart_controller.dart';
 import 'package:food_app/controllers/location_controller.dart';
+import 'package:food_app/controllers/order_controller.dart';
 import 'package:food_app/controllers/popular_product_coontroller.dart';
 import 'package:food_app/controllers/auth_controller.dart';
 import 'package:food_app/controllers/recommended_product_controller.dart';
-import 'package:food_app/pages/home/main_food_page.dart';
+import 'package:food_app/controllers/user_controller.dart';
+import 'package:food_app/models/place_order_model.dart';
 import 'package:food_app/utils/app_constants.dart';
 import 'package:food_app/utils/colors.dart';
 import 'package:food_app/utils/dimension.dart';
@@ -20,6 +23,17 @@ import '../../routes/route_helper.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
+  void _callBack(bool isSuccessful, String message, String oiderId) {
+    if(isSuccessful) {
+      Get.find<CartController>().clear();
+      Get.find<CartController>().removeCartSharedPreference();
+      Get.find<CartController>().addToCartHistoryList();
+      Get.toNamed(RouteHelper.getPaymentPage(oiderId,
+          Get.find<UserController>().userModel.id));
+    } else {
+      showCustomerSnackBar(message);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +75,7 @@ class CartPage extends StatelessWidget {
                   ],
           )),
           GetBuilder<CartController>(builder: (_cartController) {
-            return _cartController.getItems.length>0?Positioned(
+            return _cartController.getItems.isNotEmpty?Positioned(
               top: Dimension.height20*5,
               left: Dimension.width20,
               right: Dimension.width20,
@@ -174,7 +188,7 @@ class CartPage extends StatelessWidget {
                   }),
                 ),
               ),
-            ):NoDataPage(text: "Cart trống");
+            ):const NoDataPage(text: "Cart trống");
           })
         ],
       ),
@@ -215,6 +229,26 @@ class CartPage extends StatelessWidget {
                     print("Đã đăng nhập");
                     if (Get.find<LocationController>().addressList.isEmpty) {
                       Get.toNamed(RouteHelper.getAddressPage());
+                    } else {
+                      var location = Get.find<LocationController>().getUserAddress();
+                      var cart = Get.find<CartController>().getItems;
+                      var user = Get.find<UserController>().userModel;
+                      PlaceOrderBody placeOrderBody = PlaceOrderBody(
+                          cart: cart,
+                          orderAmount: 100.0,
+                          distance: 0.0,
+                          scheduleAt: "",
+                          orderNote: "A yeu e va e yeu a",
+                          address: location.address!,
+                          latitude: location.latitude!,
+                          longitude: location.longitude!,
+                          contactPersonName: user.name!,
+                          contactPersonNumber: user.phone!,
+                      );
+                      Get.find<OrderController>().placeOrder(
+                        placeOrderBody,
+                          _callBack
+                      );
                     }
                     // } else {
                     //   Get.offNamed(RouteHelper.getInitial());
@@ -242,5 +276,7 @@ class CartPage extends StatelessWidget {
         );
       },),
     );
+
+
   }
 }

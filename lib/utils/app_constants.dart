@@ -17,6 +17,8 @@ class AppConstants {
   static const String ZONE_URI = "/api/config/get-zone-id";
   static const String SEARCH_LOCATION_URI = "/api/config/place-api-autocomplete";
 
+  static const String ORDER_URI = "/api/customer/order/place";
+
   static const String USER_ADDRESS = "user-address";
   static const String ADD_USER_ADDRESS = "/api/customer/address/add";
   static const String ADDRESS_LIST_URI = "/api/customer/address/list";
