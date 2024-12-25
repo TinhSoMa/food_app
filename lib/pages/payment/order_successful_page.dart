@@ -27,16 +27,18 @@ class OrderSuccessPage extends StatelessWidget {
         Image.asset(status == 1 ? "assets/image/checked.png" :
         "assets/image/warning.png", width: 100, height: 100),
         SizedBox(height: Dimension.screenWidth * 0.1),
-
-        Text(
-          status == 1 ? 'You placed the order successfully' : 'Your order failed',
-          style: TextStyle(fontSize: Dimension.font_size26),
+        Padding(padding: EdgeInsets.only(left: Dimension.width10*5, right: Dimension.width10) ,
+          child: Text(
+            status == 1 ? 'You placed the order successfully' : 'Your order failed',
+            style: TextStyle(fontSize: Dimension.font_size26),
+          ),
         ),
+
         SizedBox(height: Dimension.height20),
 
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimension.width30,
-              vertical: Dimension.width10),
+            padding: EdgeInsets.all(Dimension.width10),
+
           child: Text(
             status == 1 ? 'Successful order' : 'Failed order',
             // style: robotoMedium.copyWith(fontSize: Dimension.font_size16,

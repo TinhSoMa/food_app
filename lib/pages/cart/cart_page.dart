@@ -23,11 +23,12 @@ import '../../routes/route_helper.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
+
   void _callBack(bool isSuccessful, String message, String oiderId) {
     if(isSuccessful) {
       Get.find<CartController>().clear();
       Get.find<CartController>().removeCartSharedPreference();
-      Get.find<CartController>().addToCartHistoryList();
+      Get.find<CartController>().getCartHistory();
       Get.toNamed(RouteHelper.getPaymentPage(oiderId,
           Get.find<UserController>().userModel.id));
     } else {
@@ -38,6 +39,7 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Positioned(
@@ -245,10 +247,14 @@ class CartPage extends StatelessWidget {
                           contactPersonName: user.name!,
                           contactPersonNumber: user.phone!,
                       );
+
                       Get.find<OrderController>().placeOrder(
                         placeOrderBody,
                           _callBack
                       );
+                      // Get.find<CartController>().getCartHistory();
+
+
                     }
                     // } else {
                     //   Get.offNamed(RouteHelper.getInitial());

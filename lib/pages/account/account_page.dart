@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../routes/route_helper.dart';
 import '../../utils/dimension.dart';
 import '../../controllers/auth_controller.dart';
+import 'chatbot.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -23,6 +24,7 @@ class AccountPage extends StatefulWidget {
 
 Future<void> _showSharedData(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  print("Shared Data: " + prefs.get('token').toString());
 
   // Lấy tất cả các khóa và giá trị từ SharedPreferences
   Map<String, dynamic> allPrefs = {};
@@ -101,13 +103,28 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     print("Load Data" + loadData.toString());
     return loadData? Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.mainColor,
+        centerTitle: true,
         title: BigText(text: "Profile", size: 24, color: Colors.white,),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.question_answer, color: Colors.white,),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CustomerChatbotPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: GetBuilder<UserController>(builder: (userController) {
         // return Container();
         return userIsLoggedIn ? (!userController.isLoading ? Container(
+          color: Colors.white,
           width: double.maxFinite,
           margin: EdgeInsets.only(top: Dimension.height20),
           child: Column(
@@ -115,6 +132,14 @@ class _AccountPageState extends State<AccountPage> {
               //profile
               AppIcon(iconData: Icons.person, size: Dimension.height50 * 3, color: Colors.white, iconSize: Dimension.height80, colorBackGroundColor: AppColors.mainColor,),
               SizedBox(height: Dimension.height20,),
+              // GestureDetector( onTap: () {
+              //   Get.offNamed(RouteHelper.getUpdateInfo());
+              // },
+              //   child: AccountWidget(
+              //       appIcon: AppIcon(iconData: Icons.settings, size: Dimension.height20, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: AppColors.mainColor,),
+              //       bigText: BigText(text: userController.userModel.name)),
+              // ),
+              // SizedBox(height: Dimension.height20,),
               //Name
               Expanded(
                 child: SingleChildScrollView(
@@ -125,6 +150,8 @@ class _AccountPageState extends State<AccountPage> {
                           appIcon: AppIcon(iconData: Icons.person, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: AppColors.mainColor,),
                           bigText: BigText(text: userController.userModel.name)),
                       SizedBox(height: Dimension.height20,),
+
+
                       //phone
                       AccountWidget(
                           appIcon: AppIcon(iconData: Icons.phone, size: Dimension.height50, color: Colors.white, iconSize: Dimension.height20, colorBackGroundColor: AppColors.yellowColor,),

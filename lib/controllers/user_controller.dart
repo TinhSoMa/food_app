@@ -52,6 +52,7 @@ class UserController extends GetxController implements GetxService {
       return ResponseModel(true, "Cập nhật thông tin thành công");
     } else {
       print("Cập nhật thất bại: ${response.statusCode} - ${response.statusText}");
+      print(response.statusCode);
       return ResponseModel(false, response.statusText ?? 'Lỗi không xác định');
     }
   } catch (e) {

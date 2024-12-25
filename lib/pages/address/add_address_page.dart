@@ -15,7 +15,6 @@ import 'package:food_app/utils/dimension.dart';
 import 'package:food_app/widgets/app_text_field.dart';
 import 'package:food_app/widgets/big_text.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

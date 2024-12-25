@@ -67,14 +67,14 @@ class _PaymentPageState extends State<PaymentPage> {
                     //_controller.future.catchError(onError)
                   },
                   onProgress: (int progress) {
-                    print("WebView is loading (progress : $progress%)");
+                    print("WebView loading (progress : $progress%)");
                   },
                   onPageStarted: (String url) {
                     print('Page started loading: $url');
                     setState(() {
                       _isLoading = true;
                     });
-                    print("printing urls "+url.toString());
+                    // print("printing urls "+url.toString());
                     _redirect(url);
 
                   },
@@ -112,20 +112,25 @@ class _PaymentPageState extends State<PaymentPage> {
       } else if (_isFailed || _isCancel) {
         Get.offNamed(RouteHelper.getOrderSuccessPage(widget.orderModel.id.toString(), 'fail'));
       }else{
-        print("Encountered problem");
+        print("......");
       }
     }
   }
 
   Future<bool> _exitApp(BuildContext context) async {
+    print("exit app");
+
     if (await controllerGlobal.canGoBack()) {
+      // Nếu WebView có thể quay lại trang trước, thực hiện hành động quay lại
       controllerGlobal.goBack();
-      return Future.value(false);
+      return Future.value(false); // Không thoát khỏi màn hình hiện tại
     } else {
-      print("app exited");
-      return true;
-      // return Get.dialog(PaymentFailedDialog(orderID: widget.orderModel.id.toString()));
+      // Nếu không thể quay lại trong WebView, điều hướng về màn hình chính
+      print("Navigating to initial screen");
+      Get.offAllNamed(RouteHelper.getInitial());
+      return Future.value(true); // Thoát khỏi màn hình hiện tại
     }
   }
+
 
 }

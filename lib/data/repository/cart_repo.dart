@@ -21,6 +21,7 @@ class CartRepo {
     cart = [];
     cartList.forEach((action) {
       action.time = time;
+      print("Add to cart list: " + action.toString());
       return cart.add(jsonEncode(action));
     });
     
@@ -93,6 +94,6 @@ class CartRepo {
 
   void removeCartSharedPreference() {
     sharedPreferences.remove(AppConstants.CART_LIST);
-    sharedPreferences.remove(AppConstants.CART_HISTORY_LIST);
+    // sharedPreferences.remove(AppConstants.CART_HISTORY_LIST);
   }
 }

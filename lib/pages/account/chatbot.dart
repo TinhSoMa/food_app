@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/utils/colors.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -20,7 +21,7 @@ class _CustomerChatbotPageState extends State<CustomerChatbotPage> {
 
     try {
   final response = await http.post(
-    Uri.parse('http://10.0.2.2:5000/predict'), // Dùng '10.0.2.2' nếu trên giả lập, hoặc IP máy host nếu trên thiết bị thật.
+    Uri.parse('https://caring-talented-slug.ngrok-free.app/predict'), // Dùng '10.0.2.2' nếu trên giả lập, hoặc IP máy host nếu trên thiết bị thật.
     headers: {'Content-Type': 'application/json'},
     body: jsonEncode({"sentence": _messageController.text}),
   );
@@ -57,9 +58,10 @@ class _CustomerChatbotPageState extends State<CustomerChatbotPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.mainColor,
         title: Text('Hỗ trợ '),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back, color: Colors.white,),
             onPressed: () {
               Navigator.pop(context);
           },

@@ -10,10 +10,10 @@ class LocationRepo {
   final SharedPreferences sharedPreferences;
   LocationRepo({required this.apiClient, required this.sharedPreferences});
 
-  Future<Response> getAddressFromGeocode(LatLng latLng) async {
-    return await apiClient.getData(
-        "${AppConstants.GEOCODE_URI}?lat=${latLng.latitude}&lng=${latLng.longitude}");
-  }
+  // Future<Response> getAddressFromGeocode(LatLng latLng) async {
+  //   return await apiClient.getData(
+  //       "${AppConstants.GEOCODE_URI}?lat=${latLng.latitude}&lng=${latLng.longitude}");
+  // }
 
 
   String getUserAddress() {
@@ -39,12 +39,10 @@ class LocationRepo {
     sharedPreferences.remove(AppConstants.USER_ADDRESS);
   }
 
-  Future<Response> getZone(String lat, String lng) async {
-    return await apiClient.getData("${AppConstants.ZONE_URI}?lat=$lat&lng=$lng");
+  // Future<Response> getZone(String lat, String lng) async {
+  //   return await apiClient.getData("${AppConstants.ZONE_URI}?lat=$lat&lng=$lng");
   }
 
-  Future<Response> searchLocation(String query) async {
-    return await apiClient.getData("${AppConstants.SEARCH_LOCATION_URI}?search_text=$query");
-  }
-
-}
+  // Future<Response> searchLocation(String query) async {
+  //   return await apiClient.getData("${AppConstants.SEARCH_LOCATION_URI}?search_text=$query");
+  // }

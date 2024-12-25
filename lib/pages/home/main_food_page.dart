@@ -40,10 +40,10 @@ class _MainState extends State<MainFoodPage> {
               children: [
                 Column(
                   children: [
-                    BigText(text: "I lấp u", color: AppColors.mainColor),
+                    BigText(text: "Food App", color: AppColors.mainColor),
                     Row(
                       children: [
-                        SmallText(text: "Công Tính", color: Colors.black45,),
+                        SmallText(text: "Home", color: Colors.black45,),
                         Icon(Icons.arrow_drop_down_rounded)
                       ],
                     )

@@ -13,6 +13,6 @@ class UserRepo {
   // In UserRepo
   Future<Response> updateUserData(Map<String, dynamic> updateData) async {
     return await apiClient.postData(
-        AppConstants.USER_INFO_UPDATE_URI, updateData);
+        AppConstants.USER_INFO_URI + "/update-profile", updateData);
   }
 }

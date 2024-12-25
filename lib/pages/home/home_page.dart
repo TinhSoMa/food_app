@@ -4,6 +4,7 @@ import 'package:food_app/pages/auth/sign_up_page.dart';
 import 'package:food_app/pages/cart/cart_history_page.dart';
 import 'package:food_app/pages/cart/cart_page.dart';
 import 'package:food_app/pages/home/main_food_page.dart';
+import 'package:food_app/pages/order/order_page.dart';
 import 'package:food_app/utils/colors.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -21,14 +22,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   List pages = [
-    MainFoodPage(),
-    // SignInPage(),
-    Container(
-    ),
-    CartHistoryPage(),
-    // Get.toNamed(RouteHelper.getCartPage()),
-    // CartPage(),
-    AccountPage(),
+    const MainFoodPage(),
+    const OrderPage(),
+    const CartHistoryPage(),
+    const AccountPage(),
 
   ];
 
